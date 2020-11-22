@@ -4,13 +4,18 @@ int fib(int);
 
 void main()
 {
-    int num,ans;
+    int num, c, i=0 ;
 
     printf("Enter num : ");
     scanf("%d",&num);
+    printf("\nFibonacci series : ");
 
-    ans = fib(num);
-    printf("\nFibonnaci : %d",ans);
+    for(c=1; c<=num; c++)
+    {
+        printf("%d\t",fib(i));
+        i++;
+    }
+
     getch();
 }
 
@@ -18,5 +23,5 @@ int fib(int num)
 {
     if(num <= 1)
         return num;
-    return (fib(num-1)+fib(num-2));
+    return (fib(num-1) + fib(num-2));
 }
