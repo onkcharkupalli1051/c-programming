@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 struct node
 {
@@ -81,12 +82,16 @@ void insertatend()
     scanf("%d",&newnode->data);
     newnode->next = 0;
 
+    temp->next = newnode;
+    temp = newnode;
+    /*
     temp = head;
     while(temp->next != 0)
     {
         temp = temp->next;
     }
     temp->next = newnode;
+    */
     printf("Inserted Succesfully.");
 }
 
@@ -99,8 +104,9 @@ void display()
     if(c == 1)
     {
         printf("\nOriginal Linked List :");
+
         temp = head;
-        while(temp->next != 0)
+        while(temp != 0)
         {
             printf("%d\t",temp->data);
             temp = temp->next;
@@ -129,7 +135,7 @@ void copy()
     else
     {
     temp = head;
-    while(temp->next != 0)
+    while(temp != 0)
     {
         newnode = (struct node*)malloc(sizeof(struct node));
         newnode->data = temp->data;
