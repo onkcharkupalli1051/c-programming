@@ -14,13 +14,14 @@ void create();
 void insertatend();
 void lenofll();
 void display();
+void reverse();
 
 void main()
 {
     int choice;
     while(1)
     {
-        printf("\nOperations :\n1. Create\n2. Insert at end\n3. Find length\n4. Exit\n5. Display\nEnter your choice : ");
+        printf("\nOperations :\n1. Create\n2. Insert at end\n3. Find length\n4. Exit\n5. Display\n6. Reverse\nEnter your choice : ");
         scanf("%d",&choice);
         switch(choice)
         {
@@ -37,6 +38,9 @@ void main()
             exit(0);
         case 5:
             display();
+            break;
+        case 6:
+            reverse();
             break;
         default:
             printf("\nInvalid Choice");
@@ -79,6 +83,7 @@ void insertatend()
 
     printf("\nEnter data : ");
     scanf("%d",&newnode->data);
+    newnode->next = 0;
 
     temp = head;
     while(temp->next != 0)
@@ -86,7 +91,7 @@ void insertatend()
         temp = temp->next;
     }
     temp->next = newnode;
-    newnode->next = 0;
+
     printf("Inserted Succesfully at the end.");
 }
 
@@ -142,4 +147,24 @@ void delete()
     }
     printf("\nDeleted Successfully"); */
     return 0;
+}
+
+void reverse()
+{
+    struct node *prevnode,*currentnode,*nextnode;
+    if(head == 0)
+        printf("\nCannot reverse");
+    else
+    {
+        prevnode = 0;
+        currentnode = nextnode = head;
+        while(nextnode != 0)
+        {
+            nextnode = nextnode->next;
+            currentnode->next = prevnode;
+            prevnode = currentnode;
+            currentnode = nextnode;
+        }
+        head = prevnode;
+    }
 }
