@@ -16,6 +16,11 @@ void insertatbeg();
 void insertatend();
 void insertatloc();
 int lenofdll();
+void deletedata();
+void deletefrombeg();
+void deleteatloc();
+void deleteatend();
+void reverse();
 
 void main()
 {
@@ -23,7 +28,7 @@ void main()
 
     while(1)
     {
-        printf("\nOperations :\n1. Create\n2. Exit\n3. Display\n4. Insert\n5. Calculate Length\nEnter choice : ");
+        printf("\nOperations :\n1. Create\n2. Exit\n3. Display\n4. Insert\n5. Calculate Length\n6. Delete data\n7. Reverse DLL\nEnter choice : ");
         scanf("%d",&choice);
         switch(choice)
         {
@@ -40,6 +45,12 @@ void main()
             break;
         case 5:
             lenofdll();
+            break;
+        case 6:
+            deletedata();
+            break;
+        case 7:
+            reverse();
             break;
         default:
             printf("\nInvalid Selection");
@@ -116,7 +127,7 @@ void insert()
     case  3:
         insertatend();
     default:
-        printf("\nInvalid");
+        printf("\nInvalid insert operation");
     }
 }
 
@@ -214,13 +225,113 @@ void insertatloc()
 
 int lenofdll()
 {
-    int count;
+    int count=1;
 
     temp = head;
     while(temp != 0)
     {
-        count++;
         temp = temp->next;
+        count++;
     }
     return count;
+}
+
+void deletedata()
+{
+    int choice;
+    printf("\n1. Delete At Beginning\n2. Delete At Location\n3. Delete At End\nEnter choice : ");
+    scanf("%d",&choice);
+
+    switch(choice)
+    {
+    case 1:
+        deletefrombeg();
+        break;
+    case 2:
+        deleteatloc();
+        break;
+    case  3:
+        deleteatend();
+    default:
+        printf("\nInvalid");
+    }
+}
+
+void deletefrombeg()
+{
+    if(head == 0)
+        printf("\nCannot Delete, Empty Dll");
+    else
+        temp = head->next;
+        temp->prev = 0;
+        free(head);
+        head = temp;
+        /*
+        temp = head;
+        head = head->next;
+        head->prev = 0;
+        free(temp);
+        */
+        printf("\nDeleted Succesfully!");
+}
+
+void deleteatend()
+{
+    if(head == 0)
+        printf("\nCannot Delete, Empty Dll");
+    else
+        temp = tail->prev;
+        temp->next = 0;
+        tail = temp;
+        free(tail);
+        /*
+        temp = tail;
+        tail->prev->next = 0;
+        tail = tail->prev;
+        free(temp);
+        */
+        printf("\nDeleted Succesfully!");
+}
+
+void deleteatloc()
+{
+    if(head == 0)
+        printf("\nCannot Delete, Empty Dll");
+    else
+    {
+        int i = 1,pos;
+        temp = head;
+
+        printf("Enter position from 1 to %d which you want to delete : ",lenofdll());
+        scanf("%d",&pos);
+        while(i < pos)
+        {
+            temp = temp->next;
+            i++;
+        }
+        temp->prev->next = temp->next;
+        temp->next->prev = temp->prev;
+        free(temp);
+        printf("\nDeleted Succesfully!");
+    }
+}
+
+void reverse()
+{
+    struct node *nextnode,*current;
+    if(head == 0)
+        printf("\nCannot Reverse, Empty Dll");
+    else
+    {
+        current = head;
+        while(current != 0)
+            nextnode = current->next;
+            current->next = current->prev;
+            current->prev = nextnode;
+            current = nextnode;
+        current = head;
+        head = tail;
+        tail = current;
+    }
+
 }
