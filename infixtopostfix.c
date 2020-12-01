@@ -1,6 +1,6 @@
 #include<stdio.h>
-#include<string.h>
 #include<ctype.h>
+#include<string.h>
 
 #define SIZE 50
 
@@ -9,19 +9,19 @@ int top = -1;
 
 int isfull()
 {
-    if(top == SIZE-1)
+    if (top == SIZE-1)
+        return 1;
+    else
+        return 0;
+}
+int isempty()
+{
+    if (top == -1)
         return 1;
     else
         return 0;
 }
 
-int isempty()
-{
-    if(top == -1)
-        return 1;
-    else
-        return 0;
-}
 void push(char op)
 {
     if(isfull())
@@ -29,20 +29,18 @@ void push(char op)
     else
     {
         top++;
-        stack[top] == op;
+        stack[top] = op;
     }
 }
 
 char pop()
 {
-    char op = '0';
+    char op;
     if(isempty())
-        printf("\nStack is Empty");
+        printf("\nStack Is Empty");
     else
-    {
         op = stack[top];
         top--;
-    }
     return op;
 }
 
@@ -58,7 +56,7 @@ int precedence(char op)
 {
     if(op == '^')
         return 3;
-    else if(op == '*' || op == '/')
+    else if(op == '/' || op == '*')
         return 2;
     else if(op == '+' || op == '-')
         return 1;
@@ -68,12 +66,13 @@ int precedence(char op)
 
 void infixtopostfix(char infix[], char postfix[])
 {
-    int i=0,j=0;
+    int i = 0, j=0;
     char item,x;
-    push('(');
-    strcat(infix,")");
-    item = infix[i];
 
+    push('(');
+    strcat(infix,')');
+
+    item = infix[i];
     while(item != '\0')
     {
         if(item == '(')
@@ -107,7 +106,7 @@ void infixtopostfix(char infix[], char postfix[])
         }
         else
         {
-            printf("\nInvalid Expression");
+            printf("\nInvalid Expression.");
             break;
         }
         i++;
@@ -115,13 +114,14 @@ void infixtopostfix(char infix[], char postfix[])
     }
     postfix[j] = '\0';
 }
+
 void main()
 {
-    char infix[SIZE],postfix[SIZE];
-    printf("\nEnter infix Expression : ");
+    char infix[SIZE], postfix[SIZE];
+    printf("\nEnter Infix Expression : ");
     gets(infix);
     infixtopostfix(infix,postfix);
-    printf("\nPostfix Expression : ");
+    printf("\Postfix Expression : ");
     puts(postfix);
     getch();
 }
