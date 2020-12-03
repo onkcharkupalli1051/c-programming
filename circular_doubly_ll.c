@@ -4,10 +4,10 @@
 struct node
 {
     int data;
-    struct node *next;
+    struct node *next,*prev;
 };
 
-struct node *head = 0, *temp;
+struct node *head = 0,*tail,*temp;
 
 void create()
 {
@@ -15,43 +15,20 @@ void create()
     newnode = (struct node*)malloc(sizeof(struct node));
 
     printf("\nEnter data : ");
-    scanf("%d",&newnode->data);
+    scanf("%d",newnode->data);
 
     if(head == 0)
     {
         head = newnode;
-        head->next = newnode;
+        newnode->next = head;
+        newnode->prev = head;
+        tail = newnode;
     }
     else
     {
-        temp = head;
-        while(temp->next != head)
-        {
-            temp = temp->next;
-        }
-        temp->next = newnode;
-    }
-    newnode->next = head;
-    printf("\nCreated Succesfully!");
-}
-
-void display()
-{
-    if(head == 0)
-    {
-        printf("\nLinked List is EMPTY");
-    }
-    else
-    {
-        printf("\nLinked List : ");
-        temp = head;
-        printf("%d ",temp->data);
-        temp = temp->next;
-        while(temp != head)
-        {
-            printf("%d ",temp->data);
-            temp = temp->next;
-        }
+        tail->next = newnode;
+        head->prev = newnode;
+        tail = newnode;
     }
 }
 
@@ -82,28 +59,24 @@ void insertatbeg()
     struct node *newnode;
     newnode = (struct node*)malloc(sizeof(struct node));
 
-    printf("Enter data : ");
-    scanf("%d",&newnode->data);
-    newnode->next = 0;
+    printf("\nEnter data : ");
+    scanf("%d",newnode->data);
 
     if(head == 0)
     {
         head = newnode;
-        temp = newnode;
         newnode->next = head;
+        newnode->prev = head;
+        tail = newnode;
     }
     else
     {
-        temp = head;
-        while(temp->next != head)
-        {
-            temp = temp->next;
-        }
         newnode->next = head;
+        newnode->prev = head->prev;
+        head->prev = newnode;
+        tail->next = newnode;
         head = newnode;
-        temp->next = head;
     }
-    printf("\nInserted Succesfully at the beginning.");
 }
 
 void insertatend()
@@ -111,59 +84,69 @@ void insertatend()
     struct node *newnode;
     newnode = (struct node*)malloc(sizeof(struct node));
 
-    printf("\nEnter Data : ");
-    scanf("%d",&newnode->data);
+    printf("\nEnter data : ");
+    scanf("%d",newnode->data);
 
     if(head == 0)
     {
         head = newnode;
         newnode->next = head;
+        newnode->prev = head;
+        tail = newnode;
     }
     else
     {
-        temp = head;
-        while(temp->next != head)
-        {
-            temp = temp->next;
-        }
-        temp->next = newnode;
         newnode->next = head;
+        newnode->prev = tail;
+        tail->next = newnode;
+        head->prev = newnode;
     }
-    printf("\nInserted Succesfully at end.");
 }
 
 void insertatloc()
 {
     struct node *newnode;
     newnode = (struct node*)malloc(sizeof(struct node));
+    int loc,count= 1;
 
-    printf("\nEnter Data : ");
-    scanf("%d",&newnode->data);
+    printf("\nEnter data : ");
+    scanf("%d",newnode->data);
 
     if(head == 0)
     {
         head = newnode;
         newnode->next = head;
+        newnode->prev = head;
+        tail = newnode;
     }
     else
     {
-        int loc;
-        printf("Enter location : );
+        printf("\nEnter Location to insert at : ");
         scanf("%d",&loc);
-
         temp = head;
-        int count = 1;
-        while(temp->next != head && count<loc-1)
+        while(temp->next != head && count < loc-1)
         {
-            temp = temp->next;
             count++;
+            temp = temp->next;
         }
-        struct node *new;
-        new = temp->next;
-        temp->next = newnode;
-        newnode->next = new;
+        newnode->next = temp->next;
+        newnode->prev = temp->prev;
+        temp->next->prev = newnode;
+        temp->prev->next = newnode;
     }
-    printf("\nInserted Succesfully at location");
+}
+
+void display()
+{
+    temp = head;
+    printf("Doubly Circular Linked list : ");
+
+    while(temp->next != head)
+    {
+        printf("%d ",temp->data);
+        temp = temp->next;
+    }
+    printf("%d ",temp->data);
 }
 
 void main()
@@ -192,7 +175,8 @@ void main()
             break;
         default:
             printf("\nInvalid, Try again");
-            continue;
         }
     }
+    return 0;
 }
+

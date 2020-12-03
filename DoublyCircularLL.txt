@@ -1,0 +1,271 @@
+//Doubly Circular Linked List
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node *pre;
+    struct node *next;
+};
+
+struct node *start=NULL;
+
+void create();
+void insert();
+void insertAtBegin();
+void insertInBet();
+void insertAtEnd();
+void Delete();
+void Display();
+void DisplayRev();
+void search();
+
+void create(){
+
+    struct node *newp,*b;
+    newp=(struct node*)malloc(sizeof(struct node));
+
+    printf("\nEnter Data :");
+    scanf("%d",&newp->data);
+
+    if(start==NULL){
+        newp->pre=newp;
+        newp->next=newp;
+        start=newp;
+    }
+    else{
+        b=start->pre;
+        b->next=newp;
+        newp->pre=b;
+        newp->next=start;
+        start->pre=newp;
+    }
+    printf("\nA node is created in the linked list.\n");
+}
+
+void insertAtBegin(){
+    struct node *newp;
+    newp=(struct node*)malloc(sizeof(struct node));
+
+    printf("\nEnter Data :");
+    scanf("%d",&newp->data);
+
+    newp->pre=start->pre;
+    start->pre->next=newp;
+    newp->next=start;
+    start->pre=newp;
+    start=newp;
+
+    printf("\n%d is inserted at the beginning of the linked list.\n",newp->data);
+}
+
+void insertInBet(){
+    struct node *newp, *a, *b;
+    int x;
+
+    newp=(struct node*)malloc(sizeof(struct node));
+    printf("\nEnter Data :");
+    scanf("%d",&newp->data);
+    printf("\nEnter the element after which a new node to be inserted :");
+    scanf("%d",&x);
+
+    a=start;
+    while(a->next!=start && a->data!=x){
+        a=a->next;
+    }
+    if(a->data==x){
+            if(a->next==start){
+                newp->pre=a;
+                newp->next=start;
+                a->next=newp;
+                start->pre=newp;
+            }
+            else{
+                b=a->next;
+                b->pre=newp;
+                a->next=newp;
+                newp->next=b;
+                newp->pre=a;
+
+            }
+            printf("\n%d is inserted after %d in the linked list.\n",newp->data,x);
+    }
+    else{
+        printf("\n%d is not found in the linked list.\n",x);
+    }
+}
+
+
+void insertAtEnd(){
+    struct node *newp, *p;
+    newp=(struct node*)malloc(sizeof(struct node));
+
+    printf("\nEnter Data :");
+    scanf("%d",&newp->data);
+
+    p=start->pre;
+    newp->pre=p;
+    newp->next=start;
+    p->next=newp;
+    start->pre=newp;
+
+    printf("\n%d is inserted at the end of the linked list.\n",newp->data);
+}
+
+void insert(){
+    int choice;
+    printf("\nInsert the element ->");
+    printf(" 1. At the beginning   2. In between   3. At the end ");
+    printf("\n\nEnter your choice :");
+    scanf("%d",&choice);
+    switch(choice){
+    case 1:
+        insertAtBegin();
+        break;
+    case 2:
+        insertInBet();
+        break;
+    case 3:
+        insertAtEnd();
+        break;
+    default:
+        printf("\nOops...invalid choice !\n");
+    }
+}
+
+void Delete(){
+    struct node *a, *b;
+    int x;
+    if(start==NULL){
+        printf("\nThe linked list is empty.\n");
+        return;
+    }
+    printf("\nEnter the element to be deleted :");
+    scanf("%d",&x);
+    b=start;
+    while(b->next!=start && b->data!=x){
+        a=b;
+        b=b->next;
+    }
+    if(b->data==x){
+        if(b==start){
+            if(b->next==start)
+                 start=NULL;
+            else{
+                start->pre->next=start->next;
+                start->next->pre=start->pre;
+                start=b->next;
+            }
+            printf("\n%d is deleted from the linked list.\n",b->data);
+            free(b);
+        }
+        else if(b->next==start){
+            a->next=start;
+            start->pre=a;
+            printf("\n%d is deleted from the linked list.\n",b->data);
+            free(b);
+        }
+        else{
+            b->next->pre=a;
+            a->next=b->next;
+            printf("\n%d is deleted from the linked list.\n",b->data);
+            free(b);
+        }
+    }
+    else{
+        printf("\n%d is not found in the linked list.\n",x);
+    }
+}
+
+void Display(){
+    struct node *a;
+    if(start==NULL){
+        printf("\nThe linked list is empty.\n");
+        return;
+    }
+    a=start;
+    printf("\n  %d\n",a->data);
+    a=a->next;
+    while(a!=start){
+        printf("  %d\n",a->data);
+        a=a->next;
+    }
+}
+
+void DisplayRev(){
+    struct node *p, *s;
+    if(start==NULL){
+        printf("\nThe linked list is empty.\n");
+        return;
+    }
+    p=start->pre;
+    printf("\n");
+    s=start;
+    while(p != start){
+        printf("  %d\n",p->data);
+        p=p->pre;
+    }
+    printf("  %d\n",s->data);
+}
+
+void search(){
+    struct node *a;
+    int x;
+    if(start==NULL){
+        printf("\nThe linked list is empty.\n");
+        return;
+    }
+    printf("\nEnter the element to be searched :");
+    scanf("%d",&x);
+    a=start;
+    while(a->next!=start && a->data!=x){
+        a=a->next;
+    }
+    if(a->data==x){
+        printf("\n%d is found in the linked list.\n",a->data);
+    }
+    else{
+        printf("\nOops...%d is not found in the linked list.\n",x);
+    }
+}
+
+int main(){
+    int choice;
+do{
+    printf("\n 1. Create a node___2. Insert a node___");
+    printf("3. Delete a node___4. Search a node___");
+    printf("5. Display the linked list___6.Display in reverse___7. Exit\n");
+    printf("\n Enter your choice :");
+    scanf("%d",&choice);
+
+    switch(choice){
+    case 1 :
+        create();
+        break;
+    case 2 :
+        insert();
+        break;
+    case 3 :
+        Delete();
+        break;
+    case 4 :
+        search();
+        break;
+    case 5 :
+        Display();
+        break;
+    case 6 :
+        DisplayRev();
+        break;
+    case 7 :
+        exit(1);
+        break;
+    default :
+        printf("\n Invalid choice ...! \n");
+    }
+
+    }while(choice!=7);
+    return 0;
+}
+
