@@ -4,10 +4,11 @@
 struct node
 {
     int data;
-    struct node *next,*prev;
+    struct node *next;
+    struct node *prev;
 };
 
-struct node *head = 0,*tail,*temp;
+struct node *head = 0,*temp;
 
 void create()
 {
@@ -15,20 +16,21 @@ void create()
     newnode = (struct node*)malloc(sizeof(struct node));
 
     printf("\nEnter data : ");
-    scanf("%d",newnode->data);
+    scanf("%d",&newnode->data);
 
     if(head == 0)
     {
+        newnode->next = newnode;
+        newnode->next = newnode;
         head = newnode;
-        newnode->next = head;
-        newnode->prev = head;
-        tail = newnode;
     }
     else
     {
-        tail->next = newnode;
+        temp = head->prev;
+        temp->next = newnode;
+        newnode->prev = temp;
+        newnode->next = head;
         head->prev = newnode;
-        tail = newnode;
     }
 }
 
@@ -36,7 +38,7 @@ void insert()
 {
     int choice;
 
-    printf("\n1. Insert at beginning\n2. INsert at end\nInsert at location\nEnter choice : ");
+    printf("\n1. Insert at beginning\n2. Insert at end\n3. Insert at location\nEnter choice : ");
     scanf("%d",&choice);
     switch(choice)
     {
@@ -60,23 +62,23 @@ void insertatbeg()
     newnode = (struct node*)malloc(sizeof(struct node));
 
     printf("\nEnter data : ");
-    scanf("%d",newnode->data);
+    scanf("%d",&newnode->data);
 
     if(head == 0)
     {
+        newnode->prev = newnode;
+        newnode->next = newnode;
         head = newnode;
-        newnode->next = head;
-        newnode->prev = head;
-        tail = newnode;
     }
     else
     {
         newnode->next = head;
         newnode->prev = head->prev;
+        head->prev->next = newnode;
         head->prev = newnode;
-        tail->next = newnode;
         head = newnode;
     }
+    printf("\n%d Entered Succesfully!");
 }
 
 void insertatend()
@@ -85,20 +87,19 @@ void insertatend()
     newnode = (struct node*)malloc(sizeof(struct node));
 
     printf("\nEnter data : ");
-    scanf("%d",newnode->data);
+    scanf("%d",&newnode->data);
 
     if(head == 0)
     {
+        newnode->next = 0;
+        newnode->prev = 0;
         head = newnode;
-        newnode->next = head;
-        newnode->prev = head;
-        tail = newnode;
     }
     else
     {
+        newnode->prev = head->prev;
         newnode->next = head;
-        newnode->prev = tail;
-        tail->next = newnode;
+        head->prev->next = newnode;
         head->prev = newnode;
     }
 }
@@ -110,17 +111,17 @@ void insertatloc()
     int loc,count= 1;
 
     printf("\nEnter data : ");
-    scanf("%d",newnode->data);
+    scanf("%d",&newnode->data);
 
     if(head == 0)
     {
+        newnode->next = newnode;
+        newnode->prev = newnode;
         head = newnode;
-        newnode->next = head;
-        newnode->prev = head;
-        tail = newnode;
     }
     else
     {
+        int count = 1;
         printf("\nEnter Location to insert at : ");
         scanf("%d",&loc);
         temp = head;
@@ -129,24 +130,33 @@ void insertatloc()
             count++;
             temp = temp->next;
         }
+        newnode->prev = temp;
         newnode->next = temp->next;
-        newnode->prev = temp->prev;
         temp->next->prev = newnode;
-        temp->prev->next = newnode;
+        temp->next = newnode;
     }
+    printf("%d Inserted At End",newnode->data);
 }
 
 void display()
 {
-    temp = head;
-    printf("Doubly Circular Linked list : ");
-
-    while(temp->next != head)
+    if(head == 0)
     {
+        printf("\nLinked List is EMpty");
+    }
+    else
+    {
+        temp = head;
+        printf("Doubly Circular Linked list : ");
+
         printf("%d ",temp->data);
         temp = temp->next;
+        while(temp != head)
+        {
+            printf("%d ",temp->data);
+            temp = temp->next;
+        }
     }
-    printf("%d ",temp->data);
 }
 
 void main()

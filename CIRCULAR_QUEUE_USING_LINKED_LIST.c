@@ -1,8 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-//FIFO
-
 struct node
 {
     int data;
@@ -16,65 +14,74 @@ void enqueue()
     struct node *newnode;
     newnode = (struct node*)malloc(sizeof(struct node));
 
-    printf("\nEnter Data : ");
+    printf("\nEnter data : ");
     scanf("%d",&newnode->data);
     newnode->next = 0;
 
-    if(front == 0 && rear == newnode)
+    if(front == 0 && rear == 0)
     {
         front = newnode;
-        rear = newnode;
+        rear->next = front;
     }
     else
     {
         rear->next = newnode;
         rear = newnode;
+        rear->next = front;
     }
-    printf("\nEnqueued Succesfully");
 }
 
 void dequeue()
 {
-    if(front == 0 && rear == 0)
+    if(front ==0 && rear == 0)
     {
-        printf("\nUnderflow");
+        printf("\nEmpty Queue, Underflow");
+    }
+    else if(front == rear)
+    {
+        temp = front;
+        printf("\n%d Dequeued succesfully",front->data);
+        front = rear = 0;
+        free(temp);
     }
     else
     {
-        printf("\n%d Dequeued Succesfully.",front->data);
+        printf("\n%d Dequeued",front->data);
         temp = front;
+        rear = front->next;
         front = front->next;
         free(temp);
     }
 }
 
+void peek()
+{
+    if(front ==0 && rear == 0)
+    {
+        printf("\nEmpty Queue");
+    }
+    else
+    {
+        printf("Front Data : ",front->data);
+    }
+}
+
 void display()
 {
-    if(front == 0 && rear == 0)
+    if(front ==0 && rear == 0)
     {
-        printf("\nEmpty");
+        printf("\nEmpty Queue");
     }
     else
     {
         temp = front;
-        printf("\nQueue : ");
-        while(temp != 0)
+        printf("\nCircular Queue");
+        while(temp->next != front)
         {
             printf("%d ",temp->data);
             temp = temp->next;
         }
-    }
-}
-
-void peek()
-{
-    if(front == 0 && rear == 0)
-    {
-        printf("\nEmpty");
-    }
-    else
-    {
-        printf("\nFront : %d",front->data);
+        printf("%d ",temp->data);
     }
 }
 
@@ -84,8 +91,10 @@ void main()
 
     while(1)
     {
-        printf("\n\nOperations :\n1. Enqueue\n2. Dequeue\n3. Peek/Front\n4. Display\n5. Exit\nEnter your choice : ");
+        printf("\nOperations :\n1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Exit");
+        printf("\nEnter choice : ");
         scanf("%d",&choice);
+
         switch(choice)
         {
         case 1:
@@ -103,8 +112,7 @@ void main()
         case 5:
             exit(0);
         default:
-            printf("\nInvalid Choice");
+            printf("\nInvalid");
         }
     }
 }
-
