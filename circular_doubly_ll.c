@@ -21,7 +21,7 @@ void create()
     if(head == 0)
     {
         newnode->next = newnode;
-        newnode->next = newnode;
+        newnode->prev = newnode;
         head = newnode;
     }
     else

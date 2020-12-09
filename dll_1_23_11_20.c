@@ -72,7 +72,6 @@ void create()
     if(head == 0)
     {
         head = newnode;
-        temp = newnode;
         tail = newnode;
     }
     else
@@ -146,18 +145,33 @@ void insertatbeg()
         newnode->prev = 0;
         newnode->next = 0;
         tail = newnode;
+
+        /*
+              tail
+            newnode
+              head
+          0    10   0
+
+        */
     }
     else
     {
         head->prev = newnode;
         newnode->next = head;
         head = newnode;
+
         /*
         head->prev = newnode;
         temp = head;
         head = newnode;
         newnode->prev = 0;
-        newnode->next = temp;*/
+        newnode->next = temp;
+
+        head
+        newnode                 tail
+        10->         <-20    30  40   50
+        12            20    28  36   44
+        */
     }
 }
 
@@ -183,6 +197,15 @@ void insertatend()
         tail->next = newnode;
         newnode->next = 0;
         tail = newnode;
+
+        /*
+
+
+
+                   head            tail      newnode
+        original :  10      20      30        40
+        address :   44      52      60        70
+        */
     }
 }
 
